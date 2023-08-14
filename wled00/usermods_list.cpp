@@ -11,6 +11,14 @@
  */
 //#include "../usermods/EXAMPLE_v2/usermod_v2_example.h"
 
+#ifdef USERMOD_STATUS_PIXEL
+  #include "../usermods/usermod_v2_status_pixel/usermod_v2_status_pixel.h"
+#endif
+
+#ifdef USERMOD_PRESET_BUTTONS
+  #include "../usermods/usermod_v2_preset_buttons/usermod_v2_preset_buttons.h"
+#endif
+
 #ifdef USERMOD_BATTERY
   #include "../usermods/Battery/usermod_v2_Battery.h"
 #endif
@@ -133,10 +141,6 @@
   #include "../usermods/wizlights/wizlights.h"
 #endif
 
-#ifdef USERMOD_WIREGUARD
-  #include "../usermods/wireguard/wireguard.h"
-#endif
-
 #ifdef USERMOD_WORDCLOCK
   #include "../usermods/usermod_v2_word_clock/usermod_v2_word_clock.h"
 #endif
@@ -202,6 +206,15 @@ void registerUsermods()
    * \/ \/ \/
    */
   //usermods.add(new MyExampleUsermod());
+
+  #ifdef USERMOD_STATUS_PIXEL
+  usermods.add(new StatusPixelUsermod());
+  #endif
+
+  #ifdef USERMOD_PRESET_BUTTONS
+  usermods.add(new PresetButtonsUsermod());
+  #endif  
+
   #ifdef USERMOD_BATTERY
   usermods.add(new UsermodBattery());
   #endif
@@ -308,10 +321,6 @@ void registerUsermods()
 
   #ifdef USERMOD_WIZLIGHTS
   usermods.add(new WizLightsUsermod());
-  #endif
-
-  #ifdef USERMOD_WIREGUARD
-  usermods.add(new WireguardUsermod());
   #endif
 
   #ifdef USERMOD_WORDCLOCK

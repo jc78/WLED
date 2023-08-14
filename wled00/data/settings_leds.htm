@@ -68,7 +68,7 @@
 						var p = d.rsvd.concat(d.um_p); // used pin array
 						d.Sf.querySelectorAll("select.pin").forEach((e)=>{if(e.value>-1)p.push(parseInt(e.value));}) // buttons, IR & relay
 						if (p.some((e)=>e==parseInt(LCs[i].value))) {
-							alert(`Sorry, pins ${JSON.stringify(p)} can't be used.`);
+							alert(`Sorry, pins ${JSON.stringify(p)} can't be used on this board.`);
 							LCs[i].value="";
 							LCs[i].focus();
 							return false;
@@ -141,7 +141,7 @@
 			let len = parseInt(d.getElementsByName("LC"+n)[0].value);
 			len += parseInt(d.getElementsByName("SL"+n)[0].value); // skipped LEDs are allocated too
 			let dbl = 0;
-			if (d.Sf.LD.checked) dbl = len * 4;	// double buffering
+			if (d.Sf.LD.checked) dbl = len * 3;	// double buffering
 			if (t < 32) {
 				if (t==26 || t==29) len *= 2; // 16 bit LEDs
 				if (maxM < 10000 && d.getElementsByName("L0"+n)[0].value == 3) { //8266 DMA uses 5x the mem
@@ -721,7 +721,11 @@ Length: <input type="number" name="XC${i}" id="xc${i}" class="l" min="1" max="65
 			<i>Keep at default if you are unsure about your type of LEDs.</i><br>
 		</div>
 		<h3>Hardware setup</h3>
-		<div id="mLC">LED outputs:</div>
+		<div>LED outputs:</div>
+		<div class="warn">&#9888; This board has 7 dedicated GPIO pins which can be used</div>
+		<div class="warn">in any combination for your LED strip's data/clock lines.</div>
+		<div class="warn">PINS: 13, 14, 23, 25, 26, 27, 32</div>
+		<div id="mLC"></div>
 		<hr class="sml">
 		<button type="button" id="+" onclick="addLEDs(1,false)">+</button>
 		<button type="button" id="-" onclick="addLEDs(-1,false)">-</button><br>

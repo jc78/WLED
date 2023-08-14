@@ -63,7 +63,7 @@
 
 // When to time out to the clock or blank the screen
 // if SLEEP_MODE_ENABLED.
-#define SCREEN_TIMEOUT_MS  60*1000    // 1 min
+#define SCREEN_TIMEOUT_MS  60*1000*3    // 3 min
 
 // Minimum time between redrawing screen in ms
 #define REFRESH_RATE_MS 1000
@@ -125,7 +125,7 @@ class FourLineDisplayUsermod : public Usermod {
     uint16_t refreshRate = REFRESH_RATE_MS;     // in ms
     uint32_t screenTimeout = SCREEN_TIMEOUT_MS; // in ms
     bool sleepMode = true;          // allow screen sleep?
-    bool clockMode = false;         // display clock
+    bool clockMode = true;         // display clock
     bool showSeconds = true;        // display clock with seconds
     bool enabled = true;
     bool contrastFix = false;

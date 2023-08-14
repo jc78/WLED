@@ -358,7 +358,9 @@ void checkTimers()
     // re-calculate sunrise and sunset just after midnight
     if (!hour(localTime) && minute(localTime)==1) calculateSunriseAndSunset();
 
-    DEBUG_PRINTF("Local time: %02d:%02d\n", hour(localTime), minute(localTime));
+    #ifndef WLED_DEBUG_IGNORE_TIMERS
+      DEBUG_PRINTF("Local time: %02d:%02d\n", hour(localTime), minute(localTime));
+    #endif
     for (uint8_t i = 0; i < 8; i++)
     {
       if (timerMacro[i] != 0

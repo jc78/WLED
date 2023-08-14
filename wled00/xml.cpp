@@ -148,7 +148,7 @@ void appendGPIOinfo() {
   #elif defined(CONFIG_IDF_TARGET_ESP32C3)
   oappend(SET_F("d.rsvd=[11,12,13,14,15,16,17"));
   #elif defined(ESP32)
-  oappend(SET_F("d.rsvd=[6,7,8,9,10,11,24,28,29,30,31,37,38"));
+  oappend(SET_F("d.rsvd=[0,1,2,3,4,5,6,7,8,9,10,11,12,15,16,17,18,19,20,21,22,24,28,29,30,31,34,35,36,37,38"));
   #else
   oappend(SET_F("d.rsvd=[6,7,8,9,10,11"));
   #endif
@@ -355,7 +355,7 @@ void getSettingsJS(byte subPage, char* dest)
     sappend('v',SET_F("CB"),strip.cctBlending);
     sappend('v',SET_F("FR"),strip.getTargetFps());
     sappend('v',SET_F("AW"),Bus::getGlobalAWMode());
-    sappend('c',SET_F("LD"),useGlobalLedBuffer);
+    sappend('c',SET_F("LD"),strip.useLedsArray);
 
     for (uint8_t s=0; s < busses.getNumBusses(); s++) {
       Bus* bus = busses.getBus(s);
@@ -382,7 +382,7 @@ void getSettingsJS(byte subPage, char* dest)
       sappend('v',lt,bus->getType());
       sappend('v',co,bus->getColorOrder() & 0x0F);
       sappend('v',ls,bus->getStart());
-      sappend('c',cv,bus->isReversed());
+      sappend('c',cv,bus->reversed);
       sappend('v',sl,bus->skippedLeds());
       sappend('c',rf,bus->isOffRefreshRequired());
       sappend('v',aw,bus->getAutoWhiteMode());

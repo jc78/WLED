@@ -34,15 +34,15 @@
 #endif
 
 #ifndef ENCODER_DT_PIN
-#define ENCODER_DT_PIN 18
+#define ENCODER_DT_PIN 4
 #endif
 
 #ifndef ENCODER_CLK_PIN
-#define ENCODER_CLK_PIN 5
+#define ENCODER_CLK_PIN 16
 #endif
 
 #ifndef ENCODER_SW_PIN
-#define ENCODER_SW_PIN 19
+#define ENCODER_SW_PIN 17
 #endif
 
 #ifndef ENCODER_MAX_DELAY_MS    // max delay between polling encoder pins
@@ -734,6 +734,7 @@ void RotaryEncoderUIUsermod::changeBrightness(bool increase) {
   bri = max(min((increase ? bri+fadeAmount : bri-fadeAmount), 255), 0);
   lampUdated();
 #ifdef USERMOD_FOUR_LINE_DISPLAY
+  DEBUG_PRINTLN(F("ROTARY MOD: UPDATE BRIGHTNESS")); 
   display->updateBrightness();
 #endif
 }
@@ -791,6 +792,7 @@ void RotaryEncoderUIUsermod::changeEffectSpeed(bool increase) {
   }
   lampUdated();
 #ifdef USERMOD_FOUR_LINE_DISPLAY
+  DEBUG_PRINTLN(F("ROTARY MOD: UPDATE SPEED")); 
   display->updateSpeed();
 #endif
 }
@@ -819,6 +821,7 @@ void RotaryEncoderUIUsermod::changeEffectIntensity(bool increase) {
   }
   lampUdated();
 #ifdef USERMOD_FOUR_LINE_DISPLAY
+  DEBUG_PRINTLN(F("ROTARY MOD: UPDATE INTENSITY")); 
   display->updateIntensity();
 #endif
 }
