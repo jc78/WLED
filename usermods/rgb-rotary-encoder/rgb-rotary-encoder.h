@@ -45,7 +45,7 @@ class RgbRotaryEncoderUsermod : public Usermod
         ebIo = -1;
         cleanup();
         return;
-      }initRotaryEncoder
+      }
 
       // I don't know why, but setting the upper bound here does not work. It results into 1717922932 O_o
       rotaryEncoder = new ESPRotary(eaIo, ebIo, stepsPerClick, incrementPerClick, maxPos, currentPos, incrementPerClick);
