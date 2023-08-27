@@ -22,7 +22,7 @@
 
 
 #ifndef STATUS_PIXEL_PIN
-    #define STATUS_PIXEL_PIN 33
+    #define STATUS_PIXEL_PIN 23
 #endif
 
 #ifndef STATUS_PIXEL_COUNT
@@ -97,7 +97,7 @@ class StatusPixelUsermod : public Usermod {
         return;
       }
 
-      ledBus->setBrightness(STATUS_PIXEL_BRIGHTNESS, true);
+      //ledBus->setBrightness(STATUS_PIXEL_BRIGHTNESS, true);
     }
 
     void cleanup()
@@ -132,7 +132,7 @@ class StatusPixelUsermod : public Usermod {
       }
 
       ledBus->setPixelColor(0, c);
-      ledBus->setBrightness(STATUS_PIXEL_BRIGHTNESS, true);
+      //ledBus->setBrightness(STATUS_PIXEL_BRIGHTNESS, true);
 
       // Update LEDs here in loop to also validate that we can update/show
       if (ledBus->canShow()) {
