@@ -601,7 +601,7 @@ class AudioReactive : public Usermod {
     };
 
     // set your config variables to their boot default value (this can also be done in readFromConfig() or a constructor if you prefer)
-    bool     enabled = true;
+    bool     enabled = false;
     bool     initDone = false;
 
     // variables  for UDP sound sync

@@ -127,7 +127,7 @@ class FourLineDisplayUsermod : public Usermod {
     bool sleepMode = true;          // allow screen sleep?
     bool clockMode = true;         // display clock
     bool showSeconds = true;        // display clock with seconds
-    bool enabled = true;
+    bool enabled = false;
     bool contrastFix = false;
 
     // Next variables hold the previous known values to determine if redraw is

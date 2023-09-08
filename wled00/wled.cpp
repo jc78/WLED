@@ -391,6 +391,25 @@ void WLED::setup()
   DEBUG_PRINT(F("heap ")); DEBUG_PRINTLN(ESP.getFreeHeap());
 
   for (uint8_t i=1; i<WLED_MAX_BUTTONS; i++) btnPin[i] = -1;
+// #ifdef BUTTON_PINS
+//   const uint8_t defButtonPins[] = {BUTTON_PINS};
+//   for (uint8_t i=1; i<WLED_MAX_BUTTONS; i++) {
+//     if (i < (sizeof defButtonPins)) {
+//       btnPin[i] = defButtonPins[i];
+//     } else {
+//       btnPin[i] = -1;
+//     }
+//   }
+// #endif
+
+// #ifdef BUTTON_TYPES
+//   const uint8_t defButtonTypes[] = {BUTTON_TYPES};
+//   for (uint8_t i=1; i<WLED_MAX_BUTTONS; i++) {
+//     if (i < (sizeof defButtonTypes)) {
+//       buttonType[i] = defButtonTypes[i];
+//     }
+//   }
+// #endif
 
   bool fsinit = false;
   DEBUGFS_PRINTLN(F("Mount FS"));

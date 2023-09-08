@@ -83,10 +83,10 @@ class PresetButtonsUsermod : public Usermod {
      * You can use it to initialize variables, sensors or similar.
      */
     void setup() {
-      if (!pinManager.allocatePin(pin1, false, PinOwner::UM_PresetButtons)) DEBUG_PRINTLN(F("Failed to allocate Pin 1."));
-      if (!pinManager.allocatePin(pin2, false, PinOwner::UM_PresetButtons)) DEBUG_PRINTLN(F("Failed to allocate Pin 2."));
-      if (!pinManager.allocatePin(pin3, false, PinOwner::UM_PresetButtons)) DEBUG_PRINTLN(F("Failed to allocate Pin 3."));
-      if (!pinManager.allocatePin(pin4, false, PinOwner::UM_PresetButtons)) DEBUG_PRINTLN(F("Failed to allocate Pin 4."));
+      // if (!pinManager.allocatePin(pin1, false, PinOwner::UM_PresetButtons)) DEBUG_PRINTLN(F("Failed to allocate Pin 1."));
+      // if (!pinManager.allocatePin(pin2, false, PinOwner::UM_PresetButtons)) DEBUG_PRINTLN(F("Failed to allocate Pin 2."));
+      // if (!pinManager.allocatePin(pin3, false, PinOwner::UM_PresetButtons)) DEBUG_PRINTLN(F("Failed to allocate Pin 3."));
+      // if (!pinManager.allocatePin(pin4, false, PinOwner::UM_PresetButtons)) DEBUG_PRINTLN(F("Failed to allocate Pin 4."));
 
       initDone = true;
     }
@@ -297,6 +297,7 @@ class PresetButtonsUsermod : public Usermod {
      */
     bool handleButton(uint8_t b) {
       yield();
+      
       // ignore certain button types as they may have other consequences
       if (!enabled
        || buttonType[b] == BTN_TYPE_NONE

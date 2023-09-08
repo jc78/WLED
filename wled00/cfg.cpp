@@ -609,7 +609,8 @@ void deserializeConfigFromFS() {
     // call readFromConfig() with an empty object so that usermods can initialize to defaults prior to saving
     JsonObject empty = JsonObject();
     usermods.readFromConfig(empty);
-    serializeConfig();
+    applyDefaultControllerConfigs();
+    serializeConfig(false);
     // init Ethernet (in case default type is set at compile time)
     #ifdef WLED_USE_ETHERNET
     WLED::instance().initEthernet();
@@ -620,12 +621,13 @@ void deserializeConfigFromFS() {
   // NOTE: This routine deserializes *and* applies the configuration
   //       Therefore, must also initialize ethernet from this function
   bool needsSave = deserializeConfig(doc.as<JsonObject>(), true);
+
   releaseJSONBufferLock();
 
   if (needsSave) serializeConfig(); // usermods required new parameters
 }
 
-void serializeConfig() {
+void serializeConfig(bool exists) {
   serializeConfigSec();
 
   DEBUG_PRINTLN(F("Writing settings to /cfg.json..."));
@@ -1006,6 +1008,10 @@ void serializeConfig() {
 
   JsonObject usermods_settings = doc.createNestedObject("um");
   usermods.addToConfig(usermods_settings);
+
+  // // If the config file doesn't already exist and is being created for the first time,
+  // // apply a controller's defuault config values.
+  // if (!exists) applyDefaultControllerConfigs();
 
   File f = WLED_FS.open("/cfg.json", "w");
   if (f) serializeJson(doc, f);

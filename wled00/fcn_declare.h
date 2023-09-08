@@ -25,8 +25,11 @@ void handleIO();
 bool deserializeConfig(JsonObject doc, bool fromFS = false);
 void deserializeConfigFromFS();
 bool deserializeConfigSec();
-void serializeConfig();
+void serializeConfig(bool exists = true);
 void serializeConfigSec();
+
+//cfg_controller.cpp
+void applyDefaultControllerConfigs();
 
 template<typename DestType>
 bool getJsonValue(const JsonVariant& element, DestType& destination) {

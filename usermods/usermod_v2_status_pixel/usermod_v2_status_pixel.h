@@ -49,7 +49,7 @@ class StatusPixelUsermod : public Usermod {
 
 
     // Private class members. You can declare variables and functions only accessible to your usermod here
-    bool enabled = true;
+    bool enabled = false;
     bool initDone = false;
     unsigned long lastTime = 0;
 

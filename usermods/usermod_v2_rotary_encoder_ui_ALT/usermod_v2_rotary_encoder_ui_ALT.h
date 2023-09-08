@@ -276,7 +276,7 @@ class RotaryEncoderUIUsermod : public Usermod {
       , presetLow(0)
       , applyToAll(true)
       , initDone(false)
-      , enabled(true)
+      , enabled(false)
       , usePcf8574(USE_PCF8574)
       , pinIRQ(PCF8574_INT_PIN)
     {}
