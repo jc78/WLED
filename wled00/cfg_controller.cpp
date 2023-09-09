@@ -4,15 +4,15 @@
 void applyDefaultControllerConfigs() {
     Serial.println("Applying default controller settings...");
 
-    // // HW Buttons
-    // btnPin[0] = 34;
-    // btnPin[1] = 35;
-    // btnPin[2] = 36;
-    // btnPin[3] = 39;
-    // buttonType[0] = 2;
-    // buttonType[1] = 2;
-    // buttonType[2] = 2;
-    // buttonType[3] = 2;
+    // HW Buttons
+    btnPin[0] = 34;
+    btnPin[1] = 35;
+    btnPin[2] = 36;
+    btnPin[3] = 39;
+    buttonType[0] = 2;
+    buttonType[1] = 2;
+    buttonType[2] = 2;
+    buttonType[3] = 2;
 
     // JsonObject hw = doc["hw"];
     // JsonObject hw_btn = hw["btn"];

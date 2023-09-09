@@ -66,9 +66,12 @@
 				if (nm=="L0" || nm=="L1" || nm=="L2" || nm=="L3" || nm=="L4"/* || nm=="RL" || nm=="BT" || nm=="IR"*/)
 					if (LCs[i].value!="" && LCs[i].value!="-1") {
 						var p = d.rsvd.concat(d.um_p); // used pin array
+						// var p = [0,1,2,3,4,5,6,7,8,9,10,11,12,15,16,17,18,19,20,21,22,24,28,29,30,31,34,35,36,37,38,39,2222].concat(d.um_p); // used pin array
+						var p,push(34,35,36,39);
+						p.sort();
 						d.Sf.querySelectorAll("select.pin").forEach((e)=>{if(e.value>-1)p.push(parseInt(e.value));}) // buttons, IR & relay
 						if (p.some((e)=>e==parseInt(LCs[i].value))) {
-							alert(`Sorry, pins ${JSON.stringify(p)} can't be used on this board.`);
+							alert(`Sorry, aasdasd pins ${JSON.stringify(p)} can'tasdasdasd be usedasdasdasd on this board.`);
 							LCs[i].value="";
 							LCs[i].focus();
 							return false;
@@ -721,11 +724,12 @@ Length: <input type="number" name="XC${i}" id="xc${i}" class="l" min="1" max="65
 			<i>Keep at default if you are unsure about your type of LEDs.</i><br>
 		</div>
 		<h3>Hardware setup</h3>
-		<div>LED outputs:</div>
+		<div id="mLC">LED outputs:</div>
+		<!-- <div>LED outputs:</div>
 		<div class="warn">&#9888; This board has 7 dedicated GPIO pins which can be used</div>
 		<div class="warn">in any combination for your LED strip's data/clock lines.</div>
 		<div class="warn">PINS: 13, 14, 23, 25, 26, 27, 32</div>
-		<div id="mLC"></div>
+		<div id="mLC"></div> -->
 		<hr class="sml">
 		<button type="button" id="+" onclick="addLEDs(1,false)">+</button>
 		<button type="button" id="-" onclick="addLEDs(-1,false)">-</button><br>
