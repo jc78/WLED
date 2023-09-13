@@ -25,7 +25,7 @@ void handleIO();
 bool deserializeConfig(JsonObject doc, bool fromFS = false);
 void deserializeConfigFromFS();
 bool deserializeConfigSec();
-void serializeConfig(bool exists = true);
+void serializeConfig();
 void serializeConfigSec();
 
 //cfg_controller.cpp
@@ -219,6 +219,9 @@ void savePreset(byte index, const char* pname = nullptr, JsonObject saveobj = Js
 inline void saveTemporaryPreset() {savePreset(255);};
 void deletePreset(byte index);
 bool getPresetName(byte index, String& name);
+
+//presets_controller.cpp
+void applyDefaultControllerPresets(JsonObject sObj);
 
 //remote.cpp
 void handleRemote();

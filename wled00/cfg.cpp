@@ -8,6 +8,8 @@
 
 //simple macro for ArduinoJSON's or syntax
 #define CJSON(a,b) a = b | a
+bool configFileExists = true;
+
 
 void getStringFromJson(char* dest, const char* src, size_t len) {
   if (src != nullptr) strlcpy(dest, src, len);
@@ -599,6 +601,7 @@ void deserializeConfigFromFS() {
   DEBUG_PRINTLN(F("Reading settings from /cfg.json..."));
 
   success = readObjectFromFile("/cfg.json", nullptr, &doc);
+  configFileExists = success;
   if (!success) { // if file does not exist, optionally try reading from EEPROM and then save defaults to FS
     releaseJSONBufferLock();
     #ifdef WLED_ADD_EEPROM_SUPPORT
@@ -609,12 +612,13 @@ void deserializeConfigFromFS() {
     // call readFromConfig() with an empty object so that usermods can initialize to defaults prior to saving
     JsonObject empty = JsonObject();
     usermods.readFromConfig(empty);
-    applyDefaultControllerConfigs();
-    serializeConfig(false);
+    serializeConfig();
+    configFileExists = true;
     // init Ethernet (in case default type is set at compile time)
     #ifdef WLED_USE_ETHERNET
     WLED::instance().initEthernet();
     #endif
+    doReboot = true;
     return;
   }
 
@@ -627,7 +631,7 @@ void deserializeConfigFromFS() {
   if (needsSave) serializeConfig(); // usermods required new parameters
 }
 
-void serializeConfig(bool exists) {
+void serializeConfig() {
   serializeConfigSec();
 
   DEBUG_PRINTLN(F("Writing settings to /cfg.json..."));
@@ -1009,9 +1013,7 @@ void serializeConfig(bool exists) {
   JsonObject usermods_settings = doc.createNestedObject("um");
   usermods.addToConfig(usermods_settings);
 
-  // // If the config file doesn't already exist and is being created for the first time,
-  // // apply a controller's defuault config values.
-  // if (!exists) applyDefaultControllerConfigs();
+  if (!configFileExists) applyDefaultControllerConfigs();
 
   File f = WLED_FS.open("/cfg.json", "w");
   if (f) serializeJson(doc, f);
