@@ -7,6 +7,7 @@ void applyDefaultControllerConfigs() {
     JsonObject hw = doc["hw"];
 
     // LEDs
+    //===========================================
     JsonObject hw_led = hw["led"];
     hw_led.remove("ins");
     JsonArray hw_led_ins = hw_led.createNestedArray("ins");
@@ -56,33 +57,35 @@ void applyDefaultControllerConfigs() {
                 pin = 13;
                 break;                                
         }
-    }      
+    }   
+    //===========================================
+
 
     // Buttons
     //===========================================
     // Button 0
     btnPin[0] = 34;
     buttonType[0] = 2;
-    // macroButton[0] = 239;
-    // macroLongPress[0] = 238;
+    macroButton[0] = 239;
+    macroLongPress[0] = 238;
 
     // Button 1
     btnPin[1] = 35;
     buttonType[1] = 2;
-    // macroButton[1] = 242;
-    // macroLongPress[1] = 241;    
+    macroButton[1] = 242;
+    macroLongPress[1] = 241;    
 
     // Button 2
     btnPin[2] = 36;
     buttonType[2] = 2;
-    // macroButton[2] = 245;
-    // macroLongPress[2] = 244;
+    macroButton[2] = 245;
+    macroLongPress[2] = 244;
 
     // Button 3
     btnPin[3] = 39;
     buttonType[3] = 2;
-    // macroButton[3] = 249;
-    // macroLongPress[3] = 247;    
+    macroButton[3] = 248;
+    macroLongPress[3] = 247;    
 
     JsonObject hw_btn = hw["btn"];
     hw_btn.remove("ins");

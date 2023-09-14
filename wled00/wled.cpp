@@ -1,4 +1,4 @@
-#define WLED_DEFINE_GLOBAL_VARS //only in one source file, wled.cpp!
+#define WLED_DEFINE_GLOBAL_VARS //only in one source file, wled.cpp!&&
 #include "wled.h"
 #include "wled_ethernet.h"
 #include <Arduino.h>
@@ -190,6 +190,7 @@ void WLED::loop()
   yield();
   handleWs();
   handleStatusLED();
+  handleStatusPixel();
 
   toki.resetTick();
 
@@ -444,6 +445,21 @@ void WLED::setup()
     // NOTE: Special case: The status LED should *NOT* be allocated.
     //       See comments in handleStatusLed().
     pinMode(STATUSLED, OUTPUT);
+  }
+#endif
+
+#if defined(STATUSPIXEL) && STATUSPIXEL>=0
+  Serial.println("Initializing Status Pixel Bus...  ");
+  
+  byte statusPixelPins[] = {STATUSPIXEL};
+  BusConfig statusPixelBusCfg = BusConfig(TYPE_WS2812_RGB, statusPixelPins, 0, 1, COL_ORDER_GRB, false, 0, RGBW_MODE_MANUAL_ONLY);
+  int numBusses = busses.getNumBusses();
+  pixelStatusBus = new BusDigital(statusPixelBusCfg, numBusses, colorOrderMap);
+  
+  if (pixelStatusBus->isOk()) {
+    Serial.println("Status Pixel Initialization: SUCCESS");
+  } else {
+    Serial.println("Status Pixel Initialization: FAILED");
   }
 #endif
 
@@ -909,6 +925,33 @@ void WLED::handleConnection()
   }
 }
 
+void WLED::handleStatusPixel()
+{
+  #if defined(STATUSPIXEL) && STATUSPIXEL>=0
+
+  // Just blink the pixel to indicate that WLED is active.
+  if (millis() >= pixelStatusLastMillis + 100) {
+    if (WLED_CONNECTED) {
+      pixelStatusColor = RGBW32(0,255,0,0);
+    } else if (WLED_MQTT_CONNECTED) {
+      pixelStatusColor = RGBW32(0,0,255,0);
+    } else if (apActive) {
+      pixelStatusColor = RGBW32(255,0,255,0);
+    } else {
+      pixelStatusColor = RGBW32(255,0,0,0);
+    }    
+
+    pixelStatusBus->setPixelColor(0, pixelStatusColor);
+    pixelStatusBus->setBrightness(50);
+    if (pixelStatusBus->canShow()) {
+      pixelStatusBus->show();
+    }        
+    
+    pixelStatusLastMillis = millis();
+  }
+  #endif
+}
+
 // If status LED pin is allocated for other uses, does nothing
 // else blink at 1Hz when WLED_CONNECTED is false (no WiFi, ?? no Ethernet ??)
 // else blink at 2Hz when MQTT is enabled but not connected
@@ -924,36 +967,15 @@ void WLED::handleStatusLED()
   }
   #endif
 
-  if (WLED_CONNECTED) {
-    c = RGBW32(0,255,0,0);
-    ledStatusType = 2;
-  } else if (WLED_MQTT_CONNECTED) {
-    c = RGBW32(0,128,0,0);
-    ledStatusType = 4;
-  } else if (apActive) {
-    c = RGBW32(0,0,255,0);
-    ledStatusType = 1;
-  }
-  if (ledStatusType) {
-    if (millis() - ledStatusLastMillis >= (1000/ledStatusType)) {
-      ledStatusLastMillis = millis();
-      ledStatusState = !ledStatusState;
-      #if STATUSLED>=0
-      digitalWrite(STATUSLED, ledStatusState);
-      #else
-      busses.setStatusPixel(ledStatusState ? c : 0);
-      #endif
-    }
-  } else {
-    #if STATUSLED>=0
-      #ifdef STATUSLEDINVERTED
+  // Just blink the traditional LED to indicate that WLED is active.
+  if (millis() >= ledStatusLastMillis + 2000) {
+    if (ledStatusState) {
       digitalWrite(STATUSLED, HIGH);
-      #else
+    } else {
       digitalWrite(STATUSLED, LOW);
-      #endif
-    #else
-      busses.setStatusPixel(0);
-    #endif
+    }
+    ledStatusState = !ledStatusState;
+    ledStatusLastMillis = millis();
   }
   #endif
 }

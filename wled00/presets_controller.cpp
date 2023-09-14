@@ -16,11 +16,12 @@ void applyDefaultControllerPresets(JsonObject sObj) {
     int blue = 0;
     
     for (uint8_t i=0; i<WLED_MAX_BUTTONS; i++) {
+        Serial.println("Setting up button " + String(buttonId) + " presets");
         sprintf(preset_char, "%d", preset_int);
         JsonObject buttonSave = sObj.createNestedObject(preset_char);
         sprintf(preset_save_char, "PS=%d", preset_int+1);
         buttonSave["win"] = preset_save_char;
-        sprintf(buttonLabelSave, "Button %d Save", buttonId);
+        sprintf(buttonLabelSave, "_Button %d Save", buttonId);
         buttonSave["n"] = buttonLabelSave;    
 
         sprintf(preset_char, "%d", preset_int+1);
@@ -69,7 +70,7 @@ void applyDefaultControllerPresets(JsonObject sObj) {
         buttonApply_seg_obj["si"] = 0; 
         buttonApply_seg_obj["m12"] = 0;   
 
-        sprintf(buttonLabelApply, "Button %d Apply", buttonId);
+        sprintf(buttonLabelApply, "_Button %d Apply", buttonId);
         buttonApply["n"] = buttonLabelApply;
 
         switch (buttonId) {
@@ -89,6 +90,7 @@ void applyDefaultControllerPresets(JsonObject sObj) {
                 blue = 255;
                 break;                               
         }
-        buttonId = buttonId + 3;
-    }
+        preset_int = preset_int + 3;
+        buttonId++;
+    }  
 }

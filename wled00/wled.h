@@ -680,6 +680,14 @@ WLED_GLOBAL uint8_t ledStatusType _INIT(0); // current status type - corresponds
 WLED_GLOBAL bool ledStatusState _INIT(false); // the current LED state
 #endif
 
+// status pixel
+#if defined(STATUSPIXEL)
+WLED_GLOBAL BusDigital *pixelStatusBus;
+WLED_GLOBAL ColorOrderMap colorOrderMap;
+WLED_GLOBAL unsigned long pixelStatusLastMillis _INIT(0);
+WLED_GLOBAL uint32_t pixelStatusColor _INIT(RGBW32(0,0,0,0)); // current pixel color
+#endif
+
 // server library objects
 WLED_GLOBAL AsyncWebServer server _INIT_N(((80)));
 #ifdef WLED_ENABLE_WEBSOCKETS
@@ -852,6 +860,7 @@ public:
   void initConnection();
   void initInterfaces();
   void handleStatusLED();
+  void handleStatusPixel();
   void enableWatchdog();
   void disableWatchdog();
 };
