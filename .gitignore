@@ -3,6 +3,7 @@
 .pioenvs
 .piolibdeps
 .vscode
+/hardware
 /wled00/Release
 /wled00/extLibs
 /wled00/my_config.h
