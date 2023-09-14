@@ -1,3 +1,8 @@
+## ⚠️ This is not the repo you're looking for!
+
+This is a fork of the amazing WLED repo and is intended solely for bespoke modifications needed for custom controller boards I designed to run WLED. This repo should be used only for compiling firmware to be installed on my custom boards. Do not use it for anything else as I can't guarantee compatibility or that it will even work for you.
+
+-----
 <p align="center">
   <img src="/images/wled_logo_akemi.png">
   <a href="https://github.com/Aircoookie/WLED/releases"><img src="https://img.shields.io/github/release/Aircoookie/WLED.svg?style=flat-square"></a>
