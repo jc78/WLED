@@ -34,11 +34,11 @@
 #endif
 
 #ifndef ENCODER_DT_PIN
-#define ENCODER_DT_PIN 4
+#define ENCODER_DT_PIN 16
 #endif
 
 #ifndef ENCODER_CLK_PIN
-#define ENCODER_CLK_PIN 16
+#define ENCODER_CLK_PIN 4
 #endif
 
 #ifndef ENCODER_SW_PIN
@@ -276,7 +276,7 @@ class RotaryEncoderUIUsermod : public Usermod {
       , presetLow(0)
       , applyToAll(true)
       , initDone(false)
-      , enabled(false)
+      , enabled(true)
       , usePcf8574(USE_PCF8574)
       , pinIRQ(PCF8574_INT_PIN)
     {}
@@ -476,6 +476,7 @@ void RotaryEncoderUIUsermod::re_sortModes(const char **modeNames, byte *indexes,
 void RotaryEncoderUIUsermod::setup()
 {
   DEBUG_PRINTLN(F("Usermod Rotary Encoder init."));
+  // Serial.println("Encoder UI Setup...");
 
   if (usePcf8574) {
     if (i2c_sda < 0 || i2c_scl < 0 || pinA < 0 || pinB < 0 || pinC < 0) {
@@ -626,7 +627,11 @@ void RotaryEncoderUIUsermod::loop()
           case 11: changedState = changeState(lineBuffer, 255, 255, 10); break; //10 = star
         }
       }
-      if (changedState) select_state = newState;
+      if (changedState) {
+        select_state = newState;
+        // Serial.print("Statge changed: ");
+        // Serial.println(select_state);
+      }
     }
 
     Enc_A = readPin(pinA); // Read encoder pins

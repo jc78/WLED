@@ -555,17 +555,17 @@ class AudioReactive : public Usermod {
     uint8_t dmType = SR_DMTYPE;
     #endif
     #ifndef I2S_SDPIN // aka DOUT
-    int8_t i2ssdPin = 32;
+    int8_t i2ssdPin = 5;
     #else
     int8_t i2ssdPin = I2S_SDPIN;
     #endif
     #ifndef I2S_WSPIN // aka LRCL
-    int8_t i2swsPin = 15;
+    int8_t i2swsPin = 19;
     #else
     int8_t i2swsPin = I2S_WSPIN;
     #endif
     #ifndef I2S_CKPIN // aka BCLK
-    int8_t i2sckPin = 14; /*PDM: set to I2S_PIN_NO_CHANGE*/
+    int8_t i2sckPin = 18; /*PDM: set to I2S_PIN_NO_CHANGE*/
     #else
     int8_t i2sckPin = I2S_CKPIN;
     #endif
@@ -601,7 +601,7 @@ class AudioReactive : public Usermod {
     };
 
     // set your config variables to their boot default value (this can also be done in readFromConfig() or a constructor if you prefer)
-    bool     enabled = false;
+    bool     enabled = true;
     bool     initDone = false;
 
     // variables  for UDP sound sync
