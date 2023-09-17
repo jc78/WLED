@@ -968,7 +968,7 @@ void WLED::handleStatusLED()
   #endif
 
   // Just blink the traditional LED to indicate that WLED is active.
-  if (millis() >= ledStatusLastMillis + 2000) {
+  if (millis() >= ledStatusLastMillis + STATUSLED_RATE) {
     if (ledStatusState) {
       digitalWrite(STATUSLED, HIGH);
     } else {
