@@ -14,10 +14,10 @@ void applyDefaultControllerConfigs() {
 
     uint8_t start = 0;
     uint8_t len = 16;
-    uint8_t pin = 27;
+    uint8_t pin = 1;
     uint8_t skip = 0;
 
-    for (uint8_t s=0; s<4; s++) {
+    for (uint8_t s=0; s<2; s++) {
         JsonObject ins = hw_led_ins.createNestedObject();
 
         ins["start"] = start;
@@ -39,14 +39,8 @@ void applyDefaultControllerConfigs() {
 
         switch (s) {
             case 0:
-                pin = 25;
-                break;
-            case 1:
-                pin = 26;
-                break;
-            case 2:
-                pin = 14;
-                break;                             
+                pin = 2;
+                break;                        
         }
     }   
     //===========================================
