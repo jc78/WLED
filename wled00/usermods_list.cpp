@@ -11,10 +11,6 @@
  */
 //#include "../usermods/EXAMPLE_v2/usermod_v2_example.h"
 
-#ifdef USERMOD_STATUS_PIXEL
-  #include "../usermods/usermod_v2_status_pixel/usermod_v2_status_pixel.h"
-#endif
-
 #ifdef USERMOD_BATTERY
   #include "../usermods/Battery/usermod_v2_Battery.h"
 #endif
@@ -206,11 +202,6 @@ void registerUsermods()
    * \/ \/ \/
    */
   //usermods.add(new MyExampleUsermod());
-
-  #ifdef USERMOD_STATUS_PIXEL
-  usermods.add(new StatusPixelUsermod());
-  #endif
-
   #ifdef USERMOD_BATTERY
   usermods.add(new UsermodBattery());
   #endif

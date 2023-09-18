@@ -99,7 +99,7 @@ void initPresetsFile()
 {
   if (WLED_FS.exists(getFileName())) return;
 
-  StaticJsonDocument<5120> doc;
+  StaticJsonDocument<64> doc;
   JsonObject sObj = doc.to<JsonObject>();
   sObj.createNestedObject("0");
   File f = WLED_FS.open(getFileName(), "w");

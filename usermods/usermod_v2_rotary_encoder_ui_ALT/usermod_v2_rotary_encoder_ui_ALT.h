@@ -34,15 +34,15 @@
 #endif
 
 #ifndef ENCODER_DT_PIN
-#define ENCODER_DT_PIN 16
+#define ENCODER_DT_PIN 18
 #endif
 
 #ifndef ENCODER_CLK_PIN
-#define ENCODER_CLK_PIN 4
+#define ENCODER_CLK_PIN 5
 #endif
 
 #ifndef ENCODER_SW_PIN
-#define ENCODER_SW_PIN 17
+#define ENCODER_SW_PIN 19
 #endif
 
 #ifndef ENCODER_MAX_DELAY_MS    // max delay between polling encoder pins
@@ -476,7 +476,6 @@ void RotaryEncoderUIUsermod::re_sortModes(const char **modeNames, byte *indexes,
 void RotaryEncoderUIUsermod::setup()
 {
   DEBUG_PRINTLN(F("Usermod Rotary Encoder init."));
-  // Serial.println("Encoder UI Setup...");
 
   if (usePcf8574) {
     if (i2c_sda < 0 || i2c_scl < 0 || pinA < 0 || pinB < 0 || pinC < 0) {
@@ -627,11 +626,7 @@ void RotaryEncoderUIUsermod::loop()
           case 11: changedState = changeState(lineBuffer, 255, 255, 10); break; //10 = star
         }
       }
-      if (changedState) {
-        select_state = newState;
-        // Serial.print("Statge changed: ");
-        // Serial.println(select_state);
-      }
+      if (changedState) select_state = newState;
     }
 
     Enc_A = readPin(pinA); // Read encoder pins
@@ -739,7 +734,6 @@ void RotaryEncoderUIUsermod::changeBrightness(bool increase) {
   bri = max(min((increase ? bri+fadeAmount : bri-fadeAmount), 255), 0);
   lampUdated();
 #ifdef USERMOD_FOUR_LINE_DISPLAY
-  DEBUG_PRINTLN(F("ROTARY MOD: UPDATE BRIGHTNESS")); 
   display->updateBrightness();
 #endif
 }
@@ -797,7 +791,6 @@ void RotaryEncoderUIUsermod::changeEffectSpeed(bool increase) {
   }
   lampUdated();
 #ifdef USERMOD_FOUR_LINE_DISPLAY
-  DEBUG_PRINTLN(F("ROTARY MOD: UPDATE SPEED")); 
   display->updateSpeed();
 #endif
 }
@@ -826,7 +819,6 @@ void RotaryEncoderUIUsermod::changeEffectIntensity(bool increase) {
   }
   lampUdated();
 #ifdef USERMOD_FOUR_LINE_DISPLAY
-  DEBUG_PRINTLN(F("ROTARY MOD: UPDATE INTENSITY")); 
   display->updateIntensity();
 #endif
 }
