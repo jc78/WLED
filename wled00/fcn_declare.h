@@ -220,9 +220,6 @@ inline void saveTemporaryPreset() {savePreset(255);};
 void deletePreset(byte index);
 bool getPresetName(byte index, String& name);
 
-//presets_controller.cpp
-void applyDefaultControllerPresets(JsonObject sObj);
-
 //remote.cpp
 void handleRemote();
 

@@ -102,7 +102,6 @@ void initPresetsFile()
   StaticJsonDocument<5120> doc;
   JsonObject sObj = doc.to<JsonObject>();
   sObj.createNestedObject("0");
-  applyDefaultControllerPresets(sObj);
   File f = WLED_FS.open(getFileName(), "w");
   if (!f) {
     errorFlag = ERR_FS_GENERAL;

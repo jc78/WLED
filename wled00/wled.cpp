@@ -190,7 +190,6 @@ void WLED::loop()
   yield();
   handleWs();
   handleStatusLED();
-  handleStatusPixel();
 
   toki.resetTick();
 
@@ -445,21 +444,6 @@ void WLED::setup()
     // NOTE: Special case: The status LED should *NOT* be allocated.
     //       See comments in handleStatusLed().
     pinMode(STATUSLED, OUTPUT);
-  }
-#endif
-
-#if defined(STATUSPIXEL) && STATUSPIXEL>=0
-  Serial.println("Initializing Status Pixel Bus...  ");
-  
-  byte statusPixelPins[] = {STATUSPIXEL};
-  BusConfig statusPixelBusCfg = BusConfig(TYPE_WS2812_RGB, statusPixelPins, 0, 1, COL_ORDER_GRB, false, 0, RGBW_MODE_MANUAL_ONLY);
-  int numBusses = busses.getNumBusses();
-  pixelStatusBus = new BusDigital(statusPixelBusCfg, numBusses, colorOrderMap);
-  
-  if (pixelStatusBus->isOk()) {
-    Serial.println("Status Pixel Initialization: SUCCESS");
-  } else {
-    Serial.println("Status Pixel Initialization: FAILED");
   }
 #endif
 
@@ -925,33 +909,6 @@ void WLED::handleConnection()
   }
 }
 
-void WLED::handleStatusPixel()
-{
-  #if defined(STATUSPIXEL) && STATUSPIXEL>=0
-
-  // Just blink the pixel to indicate that WLED is active.
-  if (millis() >= pixelStatusLastMillis + 100) {
-    if (WLED_CONNECTED) {
-      pixelStatusColor = RGBW32(0,255,0,0);
-    } else if (WLED_MQTT_CONNECTED) {
-      pixelStatusColor = RGBW32(0,0,255,0);
-    } else if (apActive) {
-      pixelStatusColor = RGBW32(255,0,255,0);
-    } else {
-      pixelStatusColor = RGBW32(255,0,0,0);
-    }    
-
-    pixelStatusBus->setPixelColor(0, pixelStatusColor);
-    pixelStatusBus->setBrightness(50);
-    if (pixelStatusBus->canShow()) {
-      pixelStatusBus->show();
-    }        
-    
-    pixelStatusLastMillis = millis();
-  }
-  #endif
-}
-
 // If status LED pin is allocated for other uses, does nothing
 // else blink at 1Hz when WLED_CONNECTED is false (no WiFi, ?? no Ethernet ??)
 // else blink at 2Hz when MQTT is enabled but not connected
@@ -963,6 +920,7 @@ void WLED::handleStatusLED()
 
   #if STATUSLED>=0
   if (pinManager.isPinAllocated(STATUSLED)) {
+    Serial.println("Status led failed to init...");
     return; //lower priority if something else uses the same pin
   }
   #endif
@@ -970,8 +928,10 @@ void WLED::handleStatusLED()
   // Just blink the traditional LED to indicate that WLED is active.
   if (millis() >= ledStatusLastMillis + STATUSLED_RATE) {
     if (ledStatusState) {
+      Serial.println("Status led ON");
       digitalWrite(STATUSLED, HIGH);
     } else {
+      Serial.println("Status led OFF");
       digitalWrite(STATUSLED, LOW);
     }
     ledStatusState = !ledStatusState;

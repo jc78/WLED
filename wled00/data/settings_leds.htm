@@ -684,7 +684,7 @@ Length: <input type="number" name="XC${i}" id="xc${i}" class="l" min="1" max="65
 			return (loc ? locproto + "//" + locip : "") + path;
 		}
 		function showBoardPinMapping(){
-			alert("Board LED Connector #1 -> GPIO pin 32\nBoard LED Connector #2 -> GPIO pin 33\nBoard LED Connector #3 -> GPIO pin 25\nBoard LED Connector #4 -> GPIO pin 26\nBoard LED Connector #5 -> GPIO pin 27\nBoard LED Connector #6 -> GPIO pin 14\nBoard LED Connector #7 -> GPIO pin 13");		
+			alert("LED Connector #1 -> pin 27\nLED Connector #2 -> pin 25\nBLED Connector #3 -> pin 26\nLED Connector #4 -> pin 14");		
 		}
 	</script>
 	<style>@import url("style.css");</style>
@@ -727,8 +727,7 @@ Length: <input type="number" name="XC${i}" id="xc${i}" class="l" min="1" max="65
 		</div>
 		<h3>Hardware setup</h3>
 		<div>LED outputs:</div>
-		<div class="warn">&#9888; <b>This board has 7 dedicated GPIO pins which can be used</b></div>
-		<div class="warn"><b>in any combination for your LED strip's data/clock lines.</b></div>
+		<div class="warn">&#9888; <b>This board has 4 dedicated GPIO pins which can be used in any combination for your LED strip's data/clock lines.</b></div>
 		<button type="button" onclick="showBoardPinMapping()">Board Pin Mapping</button>
 		<div id="mLC"></div>		
 		<div id="mLC">LED outputs:</div>
