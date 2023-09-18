@@ -8,6 +8,7 @@
 
 //simple macro for ArduinoJSON's or syntax
 #define CJSON(a,b) a = b | a
+bool configFileExists = true;
 
 void getStringFromJson(char* dest, const char* src, size_t len) {
   if (src != nullptr) strlcpy(dest, src, len);
@@ -599,6 +600,7 @@ void deserializeConfigFromFS() {
   DEBUG_PRINTLN(F("Reading settings from /cfg.json..."));
 
   success = readObjectFromFile("/cfg.json", nullptr, &doc);
+  configFileExists = success;
   if (!success) { // if file does not exist, optionally try reading from EEPROM and then save defaults to FS
     releaseJSONBufferLock();
     #ifdef WLED_ADD_EEPROM_SUPPORT
@@ -610,10 +612,12 @@ void deserializeConfigFromFS() {
     JsonObject empty = JsonObject();
     usermods.readFromConfig(empty);
     serializeConfig();
+    configFileExists = true;
     // init Ethernet (in case default type is set at compile time)
     #ifdef WLED_USE_ETHERNET
     WLED::instance().initEthernet();
     #endif
+    doReboot = true;
     return;
   }
 
@@ -1006,6 +1010,8 @@ void serializeConfig() {
 
   JsonObject usermods_settings = doc.createNestedObject("um");
   usermods.addToConfig(usermods_settings);
+
+  if (!configFileExists) applyDefaultControllerConfigs();
 
   File f = WLED_FS.open("/cfg.json", "w");
   if (f) serializeJson(doc, f);

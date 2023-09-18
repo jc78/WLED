@@ -68,7 +68,7 @@
 						var p = d.rsvd.concat(d.um_p); // used pin array
 						d.Sf.querySelectorAll("select.pin").forEach((e)=>{if(e.value>-1)p.push(parseInt(e.value));}) // buttons, IR & relay
 						if (p.some((e)=>e==parseInt(LCs[i].value))) {
-							alert(`Sorry, pins ${JSON.stringify(p)} can't be used.`);
+							alert(`Sorry, pins ${JSON.stringify(p)} can't be used on this board.`);
 							LCs[i].value="";
 							LCs[i].focus();
 							return false;
@@ -681,6 +681,9 @@ Length: <input type="number" name="XC${i}" id="xc${i}" class="l" min="1" max="65
 		function getURL(path) {
 			return (loc ? locproto + "//" + locip : "") + path;
 		}
+		function showBoardPinMapping(){
+			alert("LED Connector #1 -> pin 1\nLED Connector #2 -> pin 2");		
+		}		
 	</script>
 	<style>@import url("style.css");</style>
 </head>
@@ -721,6 +724,10 @@ Length: <input type="number" name="XC${i}" id="xc${i}" class="l" min="1" max="65
 			<i>Keep at default if you are unsure about your type of LEDs.</i><br>
 		</div>
 		<h3>Hardware setup</h3>
+		<div>LED outputs:</div>
+		<div class="warn">&#9888; <b>This board has 2 dedicated GPIO pins which can be used in any combination for your LED strip's data/clock lines.</b></div>
+		<button type="button" onclick="showBoardPinMapping()">Board Pin Mapping</button>
+		<div id="mLC"></div>		
 		<div id="mLC">LED outputs:</div>
 		<hr class="sml">
 		<button type="button" id="+" onclick="addLEDs(1,false)">+</button>
