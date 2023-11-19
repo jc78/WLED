@@ -1,4 +1,4 @@
-#define WLED_DEFINE_GLOBAL_VARS //only in one source file, wled.cpp!&&
+#define WLED_DEFINE_GLOBAL_VARS //only in one source file, wled.cpp!
 #include "wled.h"
 #include "wled_ethernet.h"
 #include <Arduino.h>
@@ -208,53 +208,51 @@ void WLED::loop()
 
 // DEBUG serial logging (every 30s)
 #ifdef WLED_DEBUG
-  #ifndef WLED_DEBUG_IGNORE_INFO
-    loopMillis = millis() - loopMillis;
-    if (loopMillis > 30) {
-      DEBUG_PRINTF("Loop took %lums.\n", loopMillis);
-      DEBUG_PRINTF("Usermods took %lums.\n", usermodMillis);
-      DEBUG_PRINTF("Strip took %lums.\n", stripMillis);
+  loopMillis = millis() - loopMillis;
+  if (loopMillis > 30) {
+    DEBUG_PRINTF("Loop took %lums.\n", loopMillis);
+    DEBUG_PRINTF("Usermods took %lums.\n", usermodMillis);
+    DEBUG_PRINTF("Strip took %lums.\n", stripMillis);
+  }
+  avgLoopMillis += loopMillis;
+  if (loopMillis > maxLoopMillis) maxLoopMillis = loopMillis;
+  if (millis() - debugTime > 29999) {
+    DEBUG_PRINTLN(F("---DEBUG INFO---"));
+    DEBUG_PRINT(F("Runtime: "));       DEBUG_PRINTLN(millis());
+    DEBUG_PRINT(F("Unix time: "));     toki.printTime(toki.getTime());
+    DEBUG_PRINT(F("Free heap: "));     DEBUG_PRINTLN(ESP.getFreeHeap());
+    #if defined(ARDUINO_ARCH_ESP32) && defined(BOARD_HAS_PSRAM)
+    if (psramFound()) {
+      DEBUG_PRINT(F("Total PSRAM: "));    DEBUG_PRINT(ESP.getPsramSize()/1024); DEBUG_PRINTLN("kB");
+      DEBUG_PRINT(F("Free PSRAM: "));     DEBUG_PRINT(ESP.getFreePsram()/1024); DEBUG_PRINTLN("kB");
     }
-    avgLoopMillis += loopMillis;
-    if (loopMillis > maxLoopMillis) maxLoopMillis = loopMillis;
-    if (millis() - debugTime > 29999) {
-      DEBUG_PRINTLN(F("---DEBUG INFO---"));
-      DEBUG_PRINT(F("Runtime: "));       DEBUG_PRINTLN(millis());
-      DEBUG_PRINT(F("Unix time: "));     toki.printTime(toki.getTime());
-      DEBUG_PRINT(F("Free heap: "));     DEBUG_PRINTLN(ESP.getFreeHeap());
-      #if defined(ARDUINO_ARCH_ESP32) && defined(BOARD_HAS_PSRAM)
-      if (psramFound()) {
-        DEBUG_PRINT(F("Total PSRAM: "));    DEBUG_PRINT(ESP.getPsramSize()/1024); DEBUG_PRINTLN("kB");
-        DEBUG_PRINT(F("Free PSRAM: "));     DEBUG_PRINT(ESP.getFreePsram()/1024); DEBUG_PRINTLN("kB");
-      }
-      #endif
-      DEBUG_PRINT(F("Wifi state: "));      DEBUG_PRINTLN(WiFi.status());
+    #endif
+    DEBUG_PRINT(F("Wifi state: "));      DEBUG_PRINTLN(WiFi.status());
 
-      if (WiFi.status() != lastWifiState) {
-        wifiStateChangedTime = millis();
-      }
-      lastWifiState = WiFi.status();
-      DEBUG_PRINT(F("State time: "));      DEBUG_PRINTLN(wifiStateChangedTime);
-      DEBUG_PRINT(F("NTP last sync: "));   DEBUG_PRINTLN(ntpLastSyncTime);
-      DEBUG_PRINT(F("Client IP: "));       DEBUG_PRINTLN(Network.localIP());
-      if (loops > 0) { // avoid division by zero
-        DEBUG_PRINT(F("Loops/sec: "));       DEBUG_PRINTLN(loops / 30);
-        DEBUG_PRINT(F("Loop time[ms]: "));   DEBUG_PRINT(avgLoopMillis/loops); DEBUG_PRINT("/");DEBUG_PRINTLN(maxLoopMillis);
-        DEBUG_PRINT(F("UM time[ms]: "));     DEBUG_PRINT(avgUsermodMillis/loops); DEBUG_PRINT("/");DEBUG_PRINTLN(maxUsermodMillis);
-        DEBUG_PRINT(F("Strip time[ms]: "));  DEBUG_PRINT(avgStripMillis/loops); DEBUG_PRINT("/"); DEBUG_PRINTLN(maxStripMillis);
-      }
-      strip.printSize();
-      loops = 0;
-      maxLoopMillis = 0;
-      maxUsermodMillis = 0;
-      maxStripMillis = 0;
-      avgUsermodMillis = 0;
-      avgStripMillis = 0;
-      debugTime = millis();
+    if (WiFi.status() != lastWifiState) {
+      wifiStateChangedTime = millis();
     }
-    loops++;
-    lastRun = millis();
-  #endif
+    lastWifiState = WiFi.status();
+    DEBUG_PRINT(F("State time: "));      DEBUG_PRINTLN(wifiStateChangedTime);
+    DEBUG_PRINT(F("NTP last sync: "));   DEBUG_PRINTLN(ntpLastSyncTime);
+    DEBUG_PRINT(F("Client IP: "));       DEBUG_PRINTLN(Network.localIP());
+    if (loops > 0) { // avoid division by zero
+      DEBUG_PRINT(F("Loops/sec: "));       DEBUG_PRINTLN(loops / 30);
+      DEBUG_PRINT(F("Loop time[ms]: "));   DEBUG_PRINT(avgLoopMillis/loops); DEBUG_PRINT("/");DEBUG_PRINTLN(maxLoopMillis);
+      DEBUG_PRINT(F("UM time[ms]: "));     DEBUG_PRINT(avgUsermodMillis/loops); DEBUG_PRINT("/");DEBUG_PRINTLN(maxUsermodMillis);
+      DEBUG_PRINT(F("Strip time[ms]: "));  DEBUG_PRINT(avgStripMillis/loops); DEBUG_PRINT("/"); DEBUG_PRINTLN(maxStripMillis);
+    }
+    strip.printSize();
+    loops = 0;
+    maxLoopMillis = 0;
+    maxUsermodMillis = 0;
+    maxStripMillis = 0;
+    avgUsermodMillis = 0;
+    avgStripMillis = 0;
+    debugTime = millis();
+  }
+  loops++;
+  lastRun = millis();
 #endif        // WLED_DEBUG
 }
 
