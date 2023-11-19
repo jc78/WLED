@@ -201,7 +201,7 @@ bool requestJSONBufferLock(uint8_t module)
   if (millis()-now >= 1000) {
     DEBUG_PRINT(F("ERROR: Locking JSON buffer failed! ("));
     DEBUG_PRINT(jsonBufferLock);
-    DEBUG_PRINTLN(")");    
+    DEBUG_PRINTLN(")");
     return false; // waiting time-outed
   }
 

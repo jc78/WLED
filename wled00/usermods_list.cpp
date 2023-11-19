@@ -202,7 +202,6 @@ void registerUsermods()
    * \/ \/ \/
    */
   //usermods.add(new MyExampleUsermod());
-
   #ifdef USERMOD_BATTERY
   usermods.add(new UsermodBattery());
   #endif

@@ -389,25 +389,6 @@ void WLED::setup()
   DEBUG_PRINT(F("heap ")); DEBUG_PRINTLN(ESP.getFreeHeap());
 
   for (uint8_t i=1; i<WLED_MAX_BUTTONS; i++) btnPin[i] = -1;
-// #ifdef BUTTON_PINS
-//   const uint8_t defButtonPins[] = {BUTTON_PINS};
-//   for (uint8_t i=1; i<WLED_MAX_BUTTONS; i++) {
-//     if (i < (sizeof defButtonPins)) {
-//       btnPin[i] = defButtonPins[i];
-//     } else {
-//       btnPin[i] = -1;
-//     }
-//   }
-// #endif
-
-// #ifdef BUTTON_TYPES
-//   const uint8_t defButtonTypes[] = {BUTTON_TYPES};
-//   for (uint8_t i=1; i<WLED_MAX_BUTTONS; i++) {
-//     if (i < (sizeof defButtonTypes)) {
-//       buttonType[i] = defButtonTypes[i];
-//     }
-//   }
-// #endif
 
   bool fsinit = false;
   DEBUGFS_PRINTLN(F("Mount FS"));
@@ -918,22 +899,40 @@ void WLED::handleStatusLED()
 
   #if STATUSLED>=0
   if (pinManager.isPinAllocated(STATUSLED)) {
-    Serial.println("Status led failed to init...");
     return; //lower priority if something else uses the same pin
   }
   #endif
 
-  // Just blink the traditional LED to indicate that WLED is active.
-  if (millis() >= ledStatusLastMillis + STATUSLED_RATE) {
-    if (ledStatusState) {
-      Serial.println("Status led ON");
-      digitalWrite(STATUSLED, HIGH);
-    } else {
-      Serial.println("Status led OFF");
-      digitalWrite(STATUSLED, LOW);
+  if (WLED_CONNECTED) {
+    c = RGBW32(0,255,0,0);
+    ledStatusType = 2;
+  } else if (WLED_MQTT_CONNECTED) {
+    c = RGBW32(0,128,0,0);
+    ledStatusType = 4;
+  } else if (apActive) {
+    c = RGBW32(0,0,255,0);
+    ledStatusType = 1;
+  }
+  if (ledStatusType) {
+    if (millis() - ledStatusLastMillis >= (1000/ledStatusType)) {
+      ledStatusLastMillis = millis();
+      ledStatusState = !ledStatusState;
+      #if STATUSLED>=0
+      digitalWrite(STATUSLED, ledStatusState);
+      #else
+      busses.setStatusPixel(ledStatusState ? c : 0);
+      #endif
     }
-    ledStatusState = !ledStatusState;
-    ledStatusLastMillis = millis();
+  } else {
+    #if STATUSLED>=0
+      #ifdef STATUSLEDINVERTED
+      digitalWrite(STATUSLED, HIGH);
+      #else
+      digitalWrite(STATUSLED, LOW);
+      #endif
+    #else
+      busses.setStatusPixel(0);
+    #endif
   }
   #endif
 }
