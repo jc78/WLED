@@ -28,9 +28,6 @@ bool deserializeConfigSec();
 void serializeConfig();
 void serializeConfigSec();
 
-//cfg_controller.cpp
-void applyDefaultControllerConfigs();
-
 template<typename DestType>
 bool getJsonValue(const JsonVariant& element, DestType& destination) {
   if (element.isNull()) {
